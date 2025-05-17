@@ -33,11 +33,12 @@
   <footer>
     <div class="footer-content">
       <div class="contact-info">
-        <span>+60 11 4048 3940</span>
-        <span>nadzrigrocery@gmail.com</span>
+        <div class="contact-us">Contact Us</div>
       </div>
-      <div>251, Lorong Melur 10, Kampung Beruas, 26600 Pekan, Pahang</div>
-      <div class="copyright">© 2025 - Nadzri Oncory</div>
+      <div><i class="fa-solid fa-phone fa-1x"></i> +60 11 4048 3940</div>
+      <div><i class="fa-solid fa-envelope"></i> nadzrigrocery@gmail.com</div>
+      <div><i class="fa-solid fa-location-dot"></i> 251, Lorong Melur 10, Kampung Beruas, 26600 Pekan, Pahang</div>
+      <div class="copyright">© 2025 - Nadzri Fresh</div>
     </div>
   </footer>
 

@@ -6,6 +6,7 @@
   <title>Index</title>
 </head>
 <body>
-  <a href="{{ route('manage_waste.addWaste') }}">View waste</a>
+  <a href="{{ route('manage_waste.addWaste') }}">Add waste</a>
+  <a href="{{ route('manage_waste.viewWaste') }}">View waste</a>
 </body>
 </html>

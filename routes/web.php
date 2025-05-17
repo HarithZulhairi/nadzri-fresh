@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/add-waste', function () {
     return view('manage_waste.addWaste');
 })->name('manage_waste.addWaste');
+
+Route::get('/view-waste', function () {
+    return view('manage_waste.viewWaste');
+})->name('manage_waste.viewWaste');

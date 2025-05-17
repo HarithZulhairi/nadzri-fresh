@@ -65,8 +65,23 @@
         
     }
 
-    .add-waste-btn {
-        background-color: #558F55;
+    .edit-waste-btn {
+        background-color: #8D8F55;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        white-space: nowrap;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 20px;
+        margin-right: 20px;
+    }
+
+    .dispose-waste-btn {
+        background-color: #8F5555;
         color: white;
         border: none;
         padding: 0.5rem 1rem;
@@ -79,13 +94,17 @@
         padding: 20px;
     }
 
-    .add-waste-btn:hover {
+    .dispose-waste-btn:hover {
         background-color: #c0392b;
+    }
+
+    .edit-waste-btn:hover {
+        background-color:rgb(90, 101, 37);
     }
 </style>
 
 <div class="waste-container">
-    <h1>Add Waste Product</h1>
+    <h1>Waste Product List</h1>
     
     <div class="waste-list">
 
@@ -93,13 +112,14 @@
             <div class="waste-item-content">
                 <div class="waste-image-1"><img></div>
                 <div class="description-waste">
-                    <h3>Red Spinach <span style="color: orange;"><i class="fa-solid fa-triangle-exclamation"></i></span></h3>
+                    <h3>Red Spinach</h3>
                     <p>Status: <span style="color: #F58F00; font-weight: bold;">Expired</span></p>
                     <p style="color: red">2 March 2025</p>
                 </div>
             </div>
             <div class="button-add-waste">
-                <button class="add-waste-btn">Add to waste</button>
+                <button class="edit-waste-btn">Edit Product</button>
+                <button class="dispose-waste-btn">Dispose</button>
             </div>
         </div>
         
@@ -107,13 +127,14 @@
             <div class="waste-item-content">
                 <div class="waste-image-1"><img></div>
                 <div class="description-waste">
-                    <h3>Gardenia Bread <span style="color: orange;"><i class="fa-solid fa-triangle-exclamation"></i></span></h3>
+                    <h3>Gardenia Bread</h3>
                     <p>Status: <span style="color: #0C00B8; font-weight: bold;">Damaged</span></p>
                     <p style="color: red">19 March 2025</p>
                 </div>
             </div>
             <div class="button-add-waste">
-                <button class="add-waste-btn">Add to waste</button>
+                <button class="edit-waste-btn">Edit Product</button>
+                <button class="dispose-waste-btn">Dispose</button>
             </div>
         </div>
         
@@ -121,13 +142,44 @@
             <div class="waste-item-content">
                 <div class="waste-image-1"><img></div>
                 <div class="description-waste">
-                    <h3>Carrots <span style="color: orange;"><i class="fa-solid fa-triangle-exclamation"></i></span></h3>
+                    <h3>Carrots</h3>
                     <p>Status: <span style="color: #B8B200; font-weight: bold;">Almost Expired</span></p>
                     <p style="color: red">25 March 2025</p>
                 </div>
             </div>
             <div class="button-add-waste">
-                <button class="add-waste-btn">Add to waste</button>
+                <button class="edit-waste-btn">Edit Product</button>
+                <button class="dispose-waste-btn">Dispose</button>
+            </div>
+        </div>
+
+        <div class="waste-item">
+            <div class="waste-item-content">
+                <div class="waste-image-1"><img></div>
+                <div class="description-waste">
+                    <h3>Dutch Lady Milk - Full cream</h3>
+                    <p>Status: <span style="color: #686868; font-weight: bold;">Disposing</span></p>
+                    <p style="color: green">Requesting dispose on 25 March 2025</p>
+                </div>
+            </div>
+            <div class="button-add-waste">
+                <button class="edit-waste-btn">Edit Product</button>
+                <button class="dispose-waste-btn">Dispose</button>
+            </div>
+        </div>
+
+                <div class="waste-item">
+            <div class="waste-item-content">
+                <div class="waste-image-1"><img></div>
+                <div class="description-waste">
+                    <h3>Carrots</h3>
+                    <p>Status: <span style="color: #686868; font-weight: bold;">Disposing</span></p>
+                    <p style="color: green">Requesting dispose on 25 March 2025</p>
+                </div>
+            </div>
+            <div class="button-add-waste">
+                <button class="edit-waste-btn">Edit Product</button>
+                <button class="dispose-waste-btn">Dispose</button>
             </div>
         </div>
 

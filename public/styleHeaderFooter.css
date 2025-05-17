@@ -43,7 +43,7 @@ body {
 }
 
 .nav-links a:hover {
-    color: #ffeb3b;
+    color: hsl(118, 100%, 24%);
 }
 
 .buttons i{
@@ -52,14 +52,14 @@ body {
 
 main {
     flex: 1;
-    padding: 2rem;
+    padding: 2rem 0rem;
 }
 
 footer {
     background-color: #F2F2F2;
     color: black;
     padding: 1.5rem 2rem;
-    text-align: center;
+    box-shadow: 2px -5px rgba(0,0,0,0.1);
 }
 
 .footer-content {
@@ -70,13 +70,17 @@ footer {
 
 .contact-info {
     display: flex;
-    justify-content: center;
     gap: 2rem;
-    margin-bottom: 1rem;
+}
+
+.contact-us {
+    font-size: x-large;
+    font-weight: bold;
 }
 
 .copyright {
     font-size: 0.9rem;
     opacity: 0.8;
+    text-align: end;
 }
 
