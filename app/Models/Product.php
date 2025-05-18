@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $table = 'product';
     protected $primaryKey = 'product_ID';
+    public $timestamps = false;
 
     protected $fillable = [
         'product_name',
@@ -21,6 +22,7 @@ class Product extends Model
         'product_expiryDate',
         'product_status',
         'product_supplier',
+        'product_waste',
         'product_picture_path'
     ];
 }

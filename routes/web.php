@@ -19,14 +19,20 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/add-waste', [WasteController::class, 'index'])->name('manage_waste.addWaste');
-Route::get('/view-waste', function () {
-    return view('manage_waste.viewWaste');
-})->name('manage_waste.viewWaste');
-
-Route::get('/edit-waste', function () {
-    return view('manage_waste.editWaste');
-})->name('manage_waste.editWaste');
+Route::get('/waste/add', [WasteController::class, 'index'])->name('manage_waste.addWaste');
+Route::patch('/waste/mark-as-waste/{product}', [WasteController::class, 'markAsWaste'])->name('manage_waste.markAsWaste');
+Route::get('/waste/view', [WasteController::class, 'viewWaste'])->name('manage_waste.viewWaste');
+Route::post('/waste/dispose/{product}', [WasteController::class, 'dispose'])->name('manage_waste.disposeWaste');
+Route::get('/waste/edit/{product}', [WasteController::class, 'edit'])->name('manage_waste.editWaste');
+Route::put('/waste/update/{product}', [WasteController::class, 'update'])->name('manage_waste.updateWaste');
+Route::delete('waste/delete/{product}', [WasteController::class, 'destroy'])->name('manage_waste.destroy');
+Route::get('/waste-count', function() {
+    return [
+        'count' => \App\Models\Product::where('product_status', '!=', 'Good')
+                    ->where('product_waste', 0)
+                    ->count()
+    ];
+});
 
 // Testing add product
 Route::get('/product', [ProductController::class, 'index'])->name('manage_waste.viewProduct');

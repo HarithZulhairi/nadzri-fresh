@@ -33,11 +33,11 @@
         flex-grow: 1;
     }
 
-    .waste-image-1 {
-        width: 60px;
-        height: 60px;
-        background-color: #ddd;
-        border-radius: 4px;
+    .product-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 4px;
     }
 
     .description-waste {
@@ -77,7 +77,7 @@
     }
 
     .add-waste-btn:hover {
-        background-color: #c0392b;
+        background-color:rgb(112, 201, 112);
     }
 
     /* Status color classes */
@@ -99,18 +99,84 @@
     .date-expired {
         color: red;
     }
+
+    /* Confirmation Modal Styles */
+    .confirmation-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 500px;
+        max-width: 90%;
+        font-size: 32px;
+    }
+
+    .modal-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+    }
+
+    .confirm-btn {
+        background-color: #24B529;
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        margin-left: 2rem;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        white-space: nowrap;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .confirm-btn:hover {
+        background-color:rgb(63, 218, 68);
+    }
+
+    .cancel-btn {
+        background-color: #C62828;
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        margin-right: 2rem;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        white-space: nowrap;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .cancel-btn:hover {
+        background-color: red;
+    }
+
 </style>
 
 <div class="waste-container">
-    <h1>Waste Product List</h1>
+    <h1>Add Waste Product</h1>
     
     <div class="waste-list">
         @foreach($products as $product)
-            @if($product->product_status !== 'Good')
+            @if($product->product_status !== 'Good' && !$product->product_waste)
             <div class="waste-item">
                 <div class="waste-item-content">
                     <div class="waste-image-1">
-                        <img src="{{ asset('storage/' . $product->product_picture_path) }}" alt="{{ $product->product_name }}">
+                        <img src="{{ asset('storage/' . $product->product_picture_path) }}" alt="{{ $product->product_name }}" class="product-image">
                     </div>
                     <div class="description-waste">
                         <h3>{{ $product->product_name }} 
@@ -132,17 +198,50 @@
                     </div>
                 </div>
                 <div class="button-add-waste">
-                    <button class="add-waste-btn">Add to waste</button>
+                    <button onclick="showConfirmationModal('{{ $product->product_ID }}')" class="add-waste-btn">Add to waste</button>
                 </div>
             </div>
             @endif
         @endforeach
         
-        @if($products->whereIn('product_status', ['Almost Expired', 'Expired', 'Damaged'])->count() == 0)
+        @if($products->whereIn('product_status', ['Almost Expired', 'Expired', 'Damaged'])->where('product_waste', false)->count() == 0)
             <div class="no-products">
                 <p>No waste products found.</p>
             </div>
         @endif
     </div>
 </div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="confirmation-modal">
+    <div class="modal-content">
+        <h3 style="text-align: center;">Are you sure you want to add this product to waste list?</h3>
+        <div class="modal-actions">
+            <form id="confirmForm" method="POST" action="">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="confirm-btn">Yes</button>
+            </form>
+            <button onclick="hideConfirmationModal()" class="cancel-btn">No</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showConfirmationModal(productId) {
+        const modal = document.getElementById('confirmationModal');
+        const form = document.getElementById('confirmForm');
+        
+        // Set the form action with the product ID
+        form.action = `/waste/mark-as-waste/${productId}`;
+        
+        // Show the modal
+        modal.style.display = 'flex';
+    }
+
+    function hideConfirmationModal() {
+        const modal = document.getElementById('confirmationModal');
+        modal.style.display = 'none';
+    }
+</script>
 @endsection

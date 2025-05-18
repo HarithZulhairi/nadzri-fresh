@@ -40,10 +40,47 @@
         </div>
     </nav>
     <div class="buttons">
-        <i class="fa-regular fa-bell fa-3x" aria-hidden="true" style="padding-right: 5rem;"></i>
-        <i class="fa-solid fa-circle-user fa-3x"></i>
+        <div class="notification-container">
+            <div class="notification-icon" onclick="toggleNotifications()">
+                <i class="fa-regular fa-bell fa-3x"></i>
+                @if($wasteCount > 0)
+                    <span class="notification-badge">{{ $wasteCount }}</span>
+                @endif
+            </div>
+            <div class="notification-dropdown">
+                @if($wasteCount > 0)
+                    <div class="notification-item">
+                        <p>There are {{ $wasteCount }} product(s) that need to be concerned!</p>
+                        <a href="{{ route('manage_waste.addWaste') }}" class="view-link">View Products</a>
+                    </div>
+                @else
+                    <div class="notification-item">
+                        <p>No products need attention</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+        <div class="profile-container">
+          <i class="fa-solid fa-circle-user fa-3x"></i>
+        </div>
+
     </div>
 </header>
+
+<script>
+    // Check for new waste products periodically
+    setInterval(function() {
+        fetch('/api/waste-count')
+            .then(response => response.json())
+            .then(data => {
+                if (data.count > 0) {
+                    document.querySelector('.notification-badge').textContent = data.count;
+                    document.querySelector('.notification-item p').textContent = 
+                        `There are ${data.count} product(s) that need to be concerned!`;
+                }
+            });
+    }, 30000); // Check every 30 seconds
+</script>
 
   <main>
     @yield('content')

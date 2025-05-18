@@ -21,16 +21,20 @@ return new class extends Migration
             $table->double('product_price');
             $table->string('product_supplier');
             $table->string('product_status');
+            $table->boolean('product_waste')->default(false);
             $table->string('product_picture_path')->nullable();
-            $table->timestamps();
+            $table->timestamp('disposed_at')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+
+    public function down()
     {
-        Schema::dropIfExists('product');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('disposed_at');
+        });
     }
 };

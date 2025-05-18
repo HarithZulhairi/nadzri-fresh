@@ -8,7 +8,6 @@
 <body>
   <a href="{{ route('manage_waste.addWaste') }}">Add waste</a>
   <a href="{{ route('manage_waste.viewWaste') }}">View waste</a>
-  <a href="{{ route('manage_waste.editWaste') }}">Edit waste</a>
   <br>
   <a href="{{ route('manage_waste.viewProduct') }}">View product</a>
   <a href="{{ route('manage_waste.createProduct') }}">Add product</a>

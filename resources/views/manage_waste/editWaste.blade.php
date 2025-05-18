@@ -1,7 +1,6 @@
 @extends('layouts/headerFooter')
 
 @section('content')
-
 <style>
     /* Edit Waste Product Styles */
     .waste-container {
@@ -18,7 +17,6 @@
         margin-top: 1.5rem;
         display: flex;
         gap: 2rem;
-        flex-direction: column;
     }
 
     .image-section {
@@ -37,8 +35,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #999;
-        margin-bottom: 1rem;
+        overflow: hidden;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .form-section {
@@ -80,8 +83,8 @@
     
     .buttons {
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-between;
+        gap: 1rem;
     }
 
     .edit-btn {
@@ -94,13 +97,11 @@
         font-weight: 500;
         cursor: pointer;
         transition: background-color 0.3s;
-        display: block;
-        margin: 0rem auto 0;
-        text-align: center;
+        flex: 1;
     }
 
     .back-btn {
-        background-color:rgb(139, 7, 7);
+        background-color: rgb(139, 7, 7);
         color: white;
         border: none;
         padding: 1rem 4rem;
@@ -109,18 +110,17 @@
         font-weight: 500;
         cursor: pointer;
         transition: background-color 0.3s;
-        display: block;
-        margin: 0rem auto 0;
+        flex: 1;
         text-align: center;
         text-decoration: none;
     }
 
     .edit-btn:hover {
-        background-color: #247348;
+        background-color: #6e703d;
     }
 
     .back-btn:hover {
-        background-color:rgb(228, 0, 0);
+        background-color: rgb(170, 9, 9);
     }
 
     .divider {
@@ -137,16 +137,36 @@
             flex: 0 0 auto;
             margin-bottom: 1.5rem;
         }
+        
+        .buttons {
+            flex-direction: column;
+        }
     }
 </style>
 
 <div class="waste-container">
     <h1>Edit Status of Waste Product</h1>
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     
-    <div class="edit-form-container">
+    <form method="POST" action="{{ route('products.updateWaste', $product->product_ID) }}" class="edit-form-container">
+        @csrf
+        @method('PUT')
+        
         <div class="image-section">
             <div class="product-image">
-                [Product Image]
+                @if($product->product_picture_path)
+                    <img src="{{ asset('storage/' . $product->product_picture_path) }}" alt="{{ $product->product_name }}">
+                @else
+                    <span>No Image</span>
+                @endif
             </div>
         </div>
 
@@ -154,40 +174,42 @@
             <div class="form-section">
                 <h2>Product Name</h2>
                 <div class="form-group">
-                    <input type="text" class="form-control" value="Red Spinach" readonly>
+                    <input type="text" class="form-control" value="{{ $product->product_name }}" readonly>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Current Status</h2>
+                <div class="form-group">
+                    <input type="text" class="form-control" value="{{ $product->product_status }}" readonly>
                 </div>
             </div>
 
             <div class="form-section">
                 <h2>New Status</h2>
                 <div class="form-group">
-                    <!-- <select class="form-control">
-                        <option value="">Choose status options</option>
-                        <option value="expired">Expired</option>
-                        <option value="damaged">Damaged</option>
-                        <option value="almost_expired">Almost Expired</option>
-                        <option value="good">Good Condition</option>
-                    </select> -->
-                    <input type="text" class="form-control" value="Red Spinach" >
+                    <select name="product_status" class="form-control" required>
+                        <option value="Donated" {{ $product->product_status == 'Donated' ? 'selected' : '' }}>Donated</option>
+                        <option value="Expired" {{ $product->product_status == 'Expired' ? 'selected' : '' }}>Expired</option>
+                        <option value="Damaged" {{ $product->product_status == 'Damaged' ? 'selected' : '' }}>Damaged</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-section">
-                <h2>New Expired Date</h2>
+                <h2>Expiry Date</h2>
                 <div class="form-group">
-                    <input type="date" class="form-control" readonly>
+                    <input type="date" class="form-control" value="{{ \Carbon\Carbon::parse($product->product_expiryDate)->format('Y-m-d') }}" readonly>
                 </div>
             </div>
 
             <div class="divider"></div>
+            
             <div class="buttons">
-                <a href="{{ route('manage_waste.viewWaste') }}" style="text-decoration: none;"><button class="edit-btn">Edit</button></a>
-                <a href="{{ route('manage_waste.viewWaste') }}" style="text-decoration: none;"><button class="back-btn">Back</button></a>
+                <button type="submit" class="edit-btn">Edit</button>
+                <a href="{{ route('manage_waste.viewWaste') }}" class="back-btn">Cancel</a>
             </div>
-
         </div>
-        
-    </div>
-    
+    </form>
 </div>
 @endsection

@@ -32,13 +32,14 @@ class ProductController extends Controller
             'product_expiryDate' => 'required|date',
             'product_supplier' => 'required|string|max:255',
             'product_status' => 'required|string|max:255',
-            'product_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'product_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20048'
         ]);
         // Handle file upload
         if ($request->hasFile('product_picture')) {
-            // Store the file in the 'public/products' directory
-            $path = $request->file('product_picture')->store('products', 'public');
-            $validatedData['product_picture_path'] = $path;
+            $file = $request->file('product_picture');
+            $originalFilename = $file->getClientOriginalName();
+            $filePath = $file->storeAs('products', $originalFilename, 'public');
+            $validatedData['product_picture_path'] = $filePath;
         }
 
         // Set default discount if not provided
