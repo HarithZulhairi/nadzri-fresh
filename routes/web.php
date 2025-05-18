@@ -24,3 +24,7 @@ Route::get('/add-waste', function () {
 Route::get('/view-waste', function () {
     return view('manage_waste.viewWaste');
 })->name('manage_waste.viewWaste');
+
+Route::get('/edit-waste', function () {
+    return view('manage_waste.editWaste');
+})->name('manage_waste.editWaste');

@@ -78,6 +78,7 @@
         font-weight: bold;
         padding: 20px;
         margin-right: 20px;
+        text-decoration: none;
     }
 
     .dispose-waste-btn {
@@ -101,6 +102,7 @@
     .edit-waste-btn:hover {
         background-color:rgb(90, 101, 37);
     }
+
 </style>
 
 <div class="waste-container">
@@ -118,7 +120,7 @@
                 </div>
             </div>
             <div class="button-add-waste">
-                <button class="edit-waste-btn">Edit Product</button>
+                <a href="{{ route('manage_waste.editWaste') }}" class="edit-waste-btn">Edit Status</a>
                 <button class="dispose-waste-btn">Dispose</button>
             </div>
         </div>
@@ -133,7 +135,7 @@
                 </div>
             </div>
             <div class="button-add-waste">
-                <button class="edit-waste-btn">Edit Product</button>
+                <button class="edit-waste-btn">Edit Status</button>
                 <button class="dispose-waste-btn">Dispose</button>
             </div>
         </div>
@@ -148,7 +150,7 @@
                 </div>
             </div>
             <div class="button-add-waste">
-                <button class="edit-waste-btn">Edit Product</button>
+                <button class="edit-waste-btn">Edit Status</button>
                 <button class="dispose-waste-btn">Dispose</button>
             </div>
         </div>
@@ -163,7 +165,7 @@
                 </div>
             </div>
             <div class="button-add-waste">
-                <button class="edit-waste-btn">Edit Product</button>
+                <button class="edit-waste-btn">Edit Status</button>
                 <button class="dispose-waste-btn">Dispose</button>
             </div>
         </div>
@@ -178,7 +180,7 @@
                 </div>
             </div>
             <div class="button-add-waste">
-                <button class="edit-waste-btn">Edit Product</button>
+                <button class="edit-waste-btn">Edit Status</button>
                 <button class="dispose-waste-btn">Dispose</button>
             </div>
         </div>

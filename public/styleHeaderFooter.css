@@ -28,22 +28,90 @@ body {
     width: 10%;
 }
 
+
+
+
+
+/* Adjust main nav links to accommodate dropdown */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links > a, .dropdown > a {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.1s;
+}
+
+.nav-links > a:hover, .dropdown:hover > a {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .nav-links {
     display: flex;
     gap: 2rem;
+    align-items: center;
 }
 
 .nav-links a {
     color: black;
     text-decoration: none;
     font-weight: 500;
-    transition: all 0.3s ease;
     font-size: x-large;
     padding: 0rem 2rem;
 }
 
 .nav-links a:hover {
-    color: hsl(118, 100%, 24%);
+    font-weight: 900;
+}
+
+/* Dropdown Navigation Styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+    left: 20%; 
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+    font-size: 14px; /* Changed from 2px to 14px for better readability */
+    font-weight: 400; /* Regular weight for dropdown items */
+}
+
+.dropdown-content a:hover {
+    background-color: #cccccc;
+    font-weight: 900;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown > a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dropdown-content a i {
+    float: right;
+    font-size: 12px; /* Slightly smaller chevron icon */
 }
 
 .buttons i{
