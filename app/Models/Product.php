@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    use HasFactory;
+
+    protected $table = 'product';
+    protected $primaryKey = 'product_ID';
+
+    protected $fillable = [
+        'product_name',
+        'product_description',
+        'product_category',
+        'product_price',
+        'product_discount',
+        'product_expiryDate',
+        'product_status',
+        'product_supplier',
+        'product_picture_path'
+    ];
+}
