@@ -156,7 +156,7 @@
         </div>
     @endif
     
-    <form method="POST" action="{{ route('products.updateWaste', $product->product_ID) }}" class="edit-form-container">
+    <form method="POST" action="{{ route('manage_waste.updateWaste', $product->product_ID) }}" class="edit-form-container">
         @csrf
         @method('PUT')
         

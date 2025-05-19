@@ -37,8 +37,9 @@ class ProductController extends Controller
         // Handle file upload
         if ($request->hasFile('product_picture')) {
             $file = $request->file('product_picture');
-            $originalFilename = $file->getClientOriginalName();
-            $filePath = $file->storeAs('products', $originalFilename, 'public');
+            $fileContents = file_get_contents($file->getRealPath());
+            $hashedName = hash('sha256', $fileContents . now()) . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('products', $hashedName, 'public');
             $validatedData['product_picture_path'] = $filePath;
         }
 
@@ -51,7 +52,7 @@ class ProductController extends Controller
         $threeDaysFromNow = $today->copy()->addDays(3);
 
         if ($validatedData['product_status'] === 'Good') {
-            if ($expiryDate->isSameDay($today)) {
+            if ($expiryDate->isSameDay($today) || $expiryDate->isPast()) {
                 $validatedData['product_status'] = 'Expired';
             } elseif ($expiryDate->isBetween($today, $threeDaysFromNow)) {
                 $validatedData['product_status'] = 'Almost Expired';

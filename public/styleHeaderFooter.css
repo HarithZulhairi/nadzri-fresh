@@ -111,6 +111,10 @@ body {
     font-size: 12px; /* Slightly smaller chevron icon */
 }
 
+.buttons {
+    display: flex;
+}
+
 .buttons i{
     color: black;
 }
@@ -152,7 +156,7 @@ footer {
 /* Notification Styles */
 .notification-container {
     position: relative;
-    padding-right: 5rem;
+    padding-right: 8rem;
 }
 
 .notification-icon {
@@ -218,4 +222,8 @@ footer {
 
 .view-link:hover {
     background-color: #247348;
+}
+
+.profile-container {
+    margin-right: 2rem;
 }
