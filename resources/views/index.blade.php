@@ -14,5 +14,9 @@
   <br>
   <br>
   <a href="{{ route('manage_grocery.addGrocery') }}">Add grocery</a>
+  <a href="{{ route('manage_grocery.searchGrocery') }}">Search grocery</a>
+  <br>
+  <a href="{{ route('manage_grocery.viewGrocery') }}">View grocery</a>
+  <a href="{{ route('manage_grocery.editGrocery', ['product' => 1]) }}">Edit grocery</a>
 </body>
 </html>
