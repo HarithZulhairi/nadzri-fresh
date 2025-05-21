@@ -11,5 +11,8 @@
   <br>
   <a href="{{ route('manage_waste.viewProduct') }}">View product</a>
   <a href="{{ route('manage_waste.createProduct') }}">Add product</a>
+  <br>
+  <br>
+  <a href="{{ route('manage_grocery.addGrocery') }}">Add grocery</a>
 </body>
 </html>

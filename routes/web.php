@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WasteController;
+use App\Http\Controllers\GroceryController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,21 @@ Route::get('/waste-count', function() {
                     ->count()
     ];
 });
+
+//MUHAMAD SYARIFUDIN BIN MOHD AZON
+
+Route::get('/grocery/add', [GroceryController::class, 'create'])->name('manage_grocery.addGrocery');
+Route::post('/grocery/store', [GroceryController::class, 'store'])->name('manage_grocery.storeGrocery');
+
+Route::get('/grocery/edit/{product}', [GroceryController::class, 'edit'])->name('manage_grocery.editGrocery');
+Route::put('/grocery/update/{product}', [GroceryController::class, 'update'])->name('manage_grocery.updateGrocery');
+
+Route::delete('/grocery/delete/{product}', [GroceryController::class, 'destroy'])->name('manage_grocery.deleteGrocery');
+
+Route::get('/grocery/view', [GroceryController::class, 'index'])->name('manage_grocery.viewGrocery');
+Route::get('/grocery/search', [GroceryController::class, 'search'])->name('manage_grocery.searchGrocery');
+
+
 
 // Testing add product
 Route::get('/product', [ProductController::class, 'index'])->name('manage_waste.viewProduct');
