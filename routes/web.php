@@ -55,3 +55,29 @@ Route::get('/grocery/search', [GroceryController::class, 'search'])->name('manag
 Route::get('/product', [ProductController::class, 'index'])->name('manage_waste.viewProduct');
 Route::get('/product/create', [ProductController::class, 'create'])->name('manage_waste.createProduct');
 Route::post('/product', [ProductController::class, 'store'])->name('manage_waste.storeProduct');
+
+
+//Manage User Registration & Login
+Route::get('/login-page', function () {
+    return view('manage_reg_login.login');
+})->name('manage_reg_login.login');
+
+Route::get('/register', function () {
+    return view('manage_reg_login.register');
+})->name('manage_reg_login.register');
+
+Route::get('/home-page', function () {
+    return view('home');
+})->name('home');
+
+Route::get('/user-profile', function () {
+    return view('manage_reg_login.profile');
+})->name('manage_reg_login.profile');
+
+Route::get('/edit-profile', function () {
+    return view('manage_reg_login.editProfile');
+})->name('manage_reg_login.editProfile');
+
+Route::get('/change-password', function () {
+    return view('manage_reg_login.changePassword');
+})->name('manage_reg_login.changePassword');
