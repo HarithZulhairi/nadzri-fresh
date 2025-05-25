@@ -39,6 +39,13 @@
         font-size: 1rem;
     }
 
+    .password-feedback {
+        font-size: 0.9rem;
+        margin-top: 4px;
+        padding-left: 5px;
+        color: #555;
+    }
+
     .btn-update {
         background-color: #4CAF50;
         color: white;
@@ -53,20 +60,39 @@
 
 <div class="password-container">
     <h2>Change Password</h2>
-    <form>
+    <form id="passwordForm" method="POST" action="{{ route('manage_reg_login.updatePassword') }}">
+        @csrf
+
+        @if(session('success'))
+            <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 8px; margin-bottom: 1rem;">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 8px; margin-bottom: 1rem;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="form-group">
             <label>Current Password*</label>
-            <input type="password" placeholder="Enter Current Password" id="currentPassword">
+            <input type="password" name="current_password" id="currentPassword" placeholder="Enter Current Password" required>
         </div>
 
         <div class="form-group">
             <label>New Password*</label>
-            <input type="password" placeholder="Enter New Password" id="newPassword">
+            <input type="password" name="new_password" id="newPassword" placeholder="Enter New Password" required>
         </div>
 
         <div class="form-group">
             <label>Confirm New Password*</label>
-            <input type="password" placeholder="Enter Confirm New Password" id="confirmPassword">
+            <input type="password" name="new_password_confirmation" id="confirmPassword" placeholder="Confirm New Password" required>
+            <div id="passwordMatchFeedback" class="password-feedback"></div>
         </div>
 
         <button type="submit" class="btn-update">Update Password</button>
@@ -74,14 +100,56 @@
 </div>
 
 <script>
-    function togglePassword(fieldId) {
-        const input = document.getElementById(fieldId);
-        if (input.type === "password") {
-            input.type = "text";
+    const newPassword = document.getElementById('newPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const feedback = document.getElementById('passwordMatchFeedback');
+
+    function checkPasswordMatch() {
+        if (confirmPassword.value === '') {
+            feedback.textContent = '';
+            return;
+        }
+
+        if (newPassword.value === confirmPassword.value) {
+            feedback.textContent = 'Passwords match.';
+            feedback.style.color = 'green';
         } else {
-            input.type = "password";
+            feedback.textContent = 'Passwords do not match.';
+            feedback.style.color = 'red';
         }
     }
+
+    newPassword.addEventListener('input', checkPasswordMatch);
+    confirmPassword.addEventListener('input', checkPasswordMatch);
+
+    // Handle submit validations
+    document.getElementById('passwordForm').addEventListener('submit', function (e) {
+        const current = newPassword.value.trim();
+        const confirm = confirmPassword.value.trim();
+        const old = document.getElementById('currentPassword').value.trim();
+
+        if (!old || !current || !confirm) return true;
+
+        if (current.length < 8) {
+            alert('New password must be at least 8 characters.');
+            e.preventDefault();
+            return false;
+        }
+
+        if (current !== confirm) {
+            alert('New password and confirmation do not match.');
+            e.preventDefault();
+            return false;
+        }
+
+        if (!confirmPassword.checkValidity()) {
+            e.preventDefault();
+            return false;
+        }
+
+        const confirmed = confirm('Are you sure you want to change your password?');
+        if (!confirmed) e.preventDefault();
+    });
 </script>
 
 @endsection
