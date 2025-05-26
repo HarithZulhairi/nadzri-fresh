@@ -22,7 +22,7 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('home');
 })->name('home');
 
@@ -66,10 +66,14 @@ Route::post('/product', [ProductController::class, 'store'])->name('manage_waste
 // Registration
 Route::get('/register', [RegLoginController::class, 'showRegisterForm'])->name('manage_reg_login.register');
 Route::post('/register/store', [RegLoginController::class, 'register'])->name('manage_reg_login.register.store');
+Route::post('/check-email', [RegLoginController::class, 'checkEmail'])->name('check.email');
+Route::post('/check-username', [RegLoginController::class, 'checkUsername'])->name('check.username');
 
 // Login
 Route::get('/login', [RegLoginController::class, 'showLoginForm'])->name('manage_reg_login.login');
-Route::post('/login', [RegLoginController::class, 'login'])->name('manage_reg_login.login.submit');
+Route::post('/login', [RegLoginController::class, 'login'])
+    ->name('manage_reg_login.login.submit')
+    ->middleware('throttle:5,1');
 Route::get('/logout', [RegLoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
@@ -79,10 +83,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile/update', [RegLoginController::class, 'updateProfile'])->name('manage_reg_login.updateProfile');
     Route::post('/profile/update-photo', [RegLoginController::class, 'updatePhoto'])->name('manage_reg_login.updatePhoto');
     Route::post('/remove-photo', [RegLoginController::class, 'removePhoto'])->name('manage_reg_login.removePhoto');
-    Route::post('/check-username', [RegLoginController::class, 'checkUsername'])->name('check.username');
 
     // Change Password
     Route::get('/password/change', [RegLoginController::class, 'showChangePassword'])->name('manage_reg_login.changePassword');
     Route::post('/password/update', [RegLoginController::class, 'updatePassword'])->name('manage_reg_login.updatePassword');
 
 });
+
