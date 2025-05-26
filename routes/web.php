@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WasteController;
 use App\Http\Controllers\GroceryController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -49,6 +50,13 @@ Route::delete('/grocery/delete/{product}', [GroceryController::class, 'destroy']
 Route::get('/grocery/view', [GroceryController::class, 'index'])->name('manage_grocery.viewGrocery');
 Route::get('/grocery/search', [GroceryController::class, 'search'])->name('manage_grocery.searchGrocery');
 
+//MUHAMMAD IQMAL HAFIY BIN TAJUDIN 
+Route::get('/stock/add', [StockController::class, 'create'])->name('manage_stock.addStock');
+Route::post('/stocks', [StockController::class, 'store'])->name('stocks.store');
+Route::get('/stock/view', [StockController::class, 'index'])->name('manage_stock.viewStock');
+Route::get('/manage_stock/{id}', [StockController::class, 'show'])->name('manage_stock.stockDetail');
+Route::put('/manage_stock/{id}', [StockController::class, 'update'])->name('manage_stock.update');
+Route::delete('/manage_stock/{id}', [StockController::class, 'destroy'])->name('manage_stock.destroy');
 
 
 // Testing add product

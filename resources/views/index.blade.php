@@ -12,13 +12,18 @@
   <a href="{{ route('manage_waste.viewProduct') }}">View product</a>
   <a href="{{ route('manage_waste.createProduct') }}">Add product</a>
   <br>
+  <a href="{{ route('manage_stock.addStock') }}">Add Stock</a>
+  <a href="{{ route('manage_stock.viewStock') }}">View Stock</a>
+
   <br>
   <a href="{{ route('manage_grocery.addGrocery') }}">Add grocery</a>
   <a href="{{ route('manage_grocery.searchGrocery') }}">Search grocery</a>
   <br>
+
   <a href="{{ route('manage_grocery.viewGrocery') }}">View grocery</a>
   <a href="{{ route('manage_grocery.editGrocery', ['product' => 1]) }}">Edit grocery</a>
-  <br><br>
+  <br>
+  <br>
   <a href="{{ route('manage_reg_login.login') }}">View Login Page</a><br>
   <a href="{{ route('manage_reg_login.register') }}">Create an account</a><br>
   <a href="{{ route('home') }}">View Home Page</a><br>
