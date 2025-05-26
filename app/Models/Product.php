@@ -17,6 +17,7 @@ class Product extends Model
         'product_name',
         'product_description',
         'product_category',
+        'product_code',
         'product_price',
         'product_discount',
         'product_expiryDate',

@@ -55,6 +55,9 @@ Route::delete('/grocery/delete/{product}', [GroceryController::class, 'destroy']
 Route::get('/grocery/view', [GroceryController::class, 'index'])->name('manage_grocery.viewGrocery');
 Route::get('/grocery/search', [GroceryController::class, 'search'])->name('manage_grocery.searchGrocery');
 
+Route::get('/grocery/view/{product}', [GroceryController::class, 'show'])->name('manage_grocery.showGrocery');
+
+
 //MUHAMMAD IQMAL HAFIY BIN TAJUDIN 
 Route::get('/stock/add', [StockController::class, 'create'])->name('manage_stock.addStock');
 Route::post('/stocks', [StockController::class, 'store'])->name('stocks.store');
