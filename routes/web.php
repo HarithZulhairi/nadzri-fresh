@@ -3,7 +3,11 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WasteController;
 use App\Http\Controllers\GroceryController;
+<<<<<<< HEAD
 use App\Http\Controllers\StockController;
+=======
+use App\Http\Controllers\RegLoginController;
+>>>>>>> 832bdbef603cd5ad04234f9863fb423b63e0ac39
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,6 +25,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 });
+
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
 
 Route::get('/waste/add', [WasteController::class, 'index'])->name('manage_waste.addWaste');
 Route::patch('/waste/mark-as-waste/{product}', [WasteController::class, 'markAsWaste'])->name('manage_waste.markAsWaste');
@@ -66,26 +74,26 @@ Route::post('/product', [ProductController::class, 'store'])->name('manage_waste
 
 
 //Manage User Registration & Login
-Route::get('/login-page', function () {
-    return view('manage_reg_login.login');
-})->name('manage_reg_login.login');
+// Registration
+Route::get('/register', [RegLoginController::class, 'showRegisterForm'])->name('manage_reg_login.register');
+Route::post('/register/store', [RegLoginController::class, 'register'])->name('manage_reg_login.register.store');
 
-Route::get('/register', function () {
-    return view('manage_reg_login.register');
-})->name('manage_reg_login.register');
+// Login
+Route::get('/login', [RegLoginController::class, 'showLoginForm'])->name('manage_reg_login.login');
+Route::post('/login', [RegLoginController::class, 'login'])->name('manage_reg_login.login.submit');
+Route::get('/logout', [RegLoginController::class, 'logout'])->name('logout');
 
-Route::get('/home-page', function () {
-    return view('home');
-})->name('home');
+Route::middleware(['auth'])->group(function () {
+    // Profile
+    Route::get('/profile', [RegLoginController::class, 'profile'])->name('manage_reg_login.profile');
+    Route::get('/profile/edit', [RegLoginController::class, 'editProfile'])->name('manage_reg_login.editProfile');
+    Route::put('/profile/update', [RegLoginController::class, 'updateProfile'])->name('manage_reg_login.updateProfile');
+    Route::post('/profile/update-photo', [RegLoginController::class, 'updatePhoto'])->name('manage_reg_login.updatePhoto');
+    Route::post('/remove-photo', [RegLoginController::class, 'removePhoto'])->name('manage_reg_login.removePhoto');
+    Route::post('/check-username', [RegLoginController::class, 'checkUsername'])->name('check.username');
 
-Route::get('/user-profile', function () {
-    return view('manage_reg_login.profile');
-})->name('manage_reg_login.profile');
+    // Change Password
+    Route::get('/password/change', [RegLoginController::class, 'showChangePassword'])->name('manage_reg_login.changePassword');
+    Route::post('/password/update', [RegLoginController::class, 'updatePassword'])->name('manage_reg_login.updatePassword');
 
-Route::get('/edit-profile', function () {
-    return view('manage_reg_login.editProfile');
-})->name('manage_reg_login.editProfile');
-
-Route::get('/change-password', function () {
-    return view('manage_reg_login.changePassword');
-})->name('manage_reg_login.changePassword');
+});

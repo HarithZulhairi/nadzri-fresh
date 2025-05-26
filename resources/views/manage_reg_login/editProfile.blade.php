@@ -75,56 +75,91 @@
         background: #4CAF50;
         color: #fff;
     }
+
+    
 </style>
 
 <div class="edit-container">
     <h2>Edit Profile</h2>
-    <form>
+    <form action="{{ route('manage_reg_login.updateProfile') }}" method="POST" onsubmit="return confirmProfileUpdate()">
+        @csrf
+        @method('PUT') 
+
         <div class="form-group">
             <label>Name</label>
-            <input type="text" value="Limah Binti Daud" readonly>
+            <input type="text" name="name" value="{{ $user->name }}">
         </div>
 
         <div class="form-group">
             <label>Username</label>
-            <input type="text" value="limahdaud" readonly>
+            <input type="text" name="username" id="usernameInput" value="{{ $user->username }}">
+            <span id="usernameFeedback" style="font-size: 0.9rem;"></span>
         </div>
 
         <div class="form-group">
             <label>Email</label>
-            <input type="email" value="limah@gmail.com" readonly>
+            <input type="email" name="email" value="{{ $user->email }}">
         </div>
 
         <div class="form-group">
             <label>Phone Number</label>
-            <input type="text" value="0123456789" readonly>
+            <input type="text" name="phone" value="{{ $user->phone }}">
         </div>
 
         <div class="form-group">
             <label>Date of Birth</label>
-            <div class="dob-selects">
-                <select disabled>
-                    <option selected>6</option>
-                </select>
-                <select disabled>
-                    <option selected>8</option>
-                </select>
-                <select disabled>
-                    <option selected>1985</option>
-                </select>
-            </div>
+            <input type="date" name="dob" value="{{ $user->dob }}">
         </div>
 
         <div class="form-group">
             <label>Address</label>
-            <input type="text" value="No. 123, Jalan Jalan, Taman Indah" readonly>
+            <input type="text" name="address" value="{{ $user->address }}">
         </div>
 
         <div class="button-group">
-            <button type="button" class="btn-cancel">Cancel</button>
+            <a href="{{ route('manage_reg_login.profile') }}" class="btn-cancel">Cancel</a>
             <button type="submit" class="btn-save">Save</button>
         </div>
     </form>
+
 </div>
+
+<script>
+    function confirmProfileUpdate() {
+        return confirm("Are you sure you want to save these profile changes?");
+    }
+
+    document.getElementById('usernameInput').addEventListener('input', function () {
+        const username = this.value;
+        const feedback = document.getElementById('usernameFeedback');
+
+        if (username.length < 3) {
+            feedback.textContent = 'Username too short.';
+            feedback.style.color = 'orange';
+            return;
+        }
+
+        fetch('{{ route("check.username") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ username })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.available) {
+                feedback.textContent = 'Username is available.';
+                feedback.style.color = 'green';
+            } else {
+                feedback.textContent = 'Username is already taken.';
+                feedback.style.color = 'red';
+            }
+        });
+    });
+
+</script>
+
 
 @endsection

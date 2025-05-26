@@ -13,7 +13,7 @@
   <header class="header">
     <img class="logo" src="{{ asset('uploads/Nadzri-fresh-logo.png') }}">
     <nav class="nav-links">
-        <a href="">Home</a>
+        <a href="{{ route('home') }}">Home</a>
         
         <div class="dropdown">
             <a href="">Stocks</a>
@@ -61,7 +61,12 @@
             </div>
         </div>
         <div class="profile-container">
-          <i class="fa-solid fa-circle-user fa-3x"></i>
+        <i class="fa-solid fa-circle-user fa-3x" onclick="toggleProfileMenu()"></i>
+        <div class="profile-dropdown" id="profileDropdown">
+            <a href="{{ route('manage_reg_login.profile') }}">My Profile</a>
+            <a href="{{ route('manage_reg_login.changePassword') }}">Change Password</a>
+            <a href="{{ route('logout') }}">Logout</a>
+        </div>
         </div>
 
     </div>
@@ -80,6 +85,20 @@
                 }
             });
     }, 30000); // Check every 30 seconds
+
+    function toggleProfileMenu() {
+        const dropdown = document.getElementById('profileDropdown');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Optional: close dropdown when clicking outside
+    document.addEventListener('click', function (e) {
+        const profileContainer = document.querySelector('.profile-container');
+        const dropdown = document.getElementById('profileDropdown');
+        if (!profileContainer.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
 </script>
 
   <main>

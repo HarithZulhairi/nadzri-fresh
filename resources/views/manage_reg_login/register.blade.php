@@ -83,6 +83,27 @@
     .register-form button:hover { 
         background-color: #555; 
     }
+
+    #usernameFeedback {
+        text-align: left;
+        color: #666;
+        margin-top: -1px;
+        margin-bottom: 1px;
+        padding-left: 10px;
+        font-size: 0.85rem;
+        height: 5px; /* reserve space */
+    }
+
+    #passwordMatchFeedback {
+        text-align: left;
+        color: #666;
+        margin-top: -7px;
+        margin-bottom: 7px;
+        padding-left: 10px;
+        font-size: 0.85rem;
+        height: 5px;
+    }
+
 </style>
 
 <div class="register-container">
@@ -93,11 +114,24 @@
 
         <h2>Sign Up</h2>
 
-        <form class="register-form" method="POST" action="">
+        @if ($errors->any())
+                <div style="color: red;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+        <form class="register-form" method="POST" action="register/store">
             @csrf
 
             <input type="text" name="name" placeholder="Name*" required>
-            <input type="text" name="username" placeholder="Username*" required>
+            <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                <input type="text" name="username" id="usernameInput" placeholder="Username*" required>
+                <span id="usernameFeedback"></span>
+            </div>
             <input type="email" name="email" placeholder="Email*" required>
 
             <div class="form-row">
@@ -109,6 +143,8 @@
 
             <input type="date" name="dob" placeholder="Date Of Birth">
             <input type="password" name="password" placeholder="Password*" required>
+            <input type="password" name="password_confirmation" id="confirmPasswordInput" placeholder="Confirm Password*" required>
+            <span id="passwordMatchFeedback"></span>
 
             <select name="role" required>
                 <option value="">Select User</option>
@@ -117,8 +153,77 @@
             </select>
 
             <button type="submit">Register</button>
+
+            
+
         </form>
     </div>
 </div>
+
+<script>
+document.getElementById('usernameInput').addEventListener('input', function () {
+    const username = this.value;
+    const feedback = document.getElementById('usernameFeedback');
+
+    if (username.length < 3) {
+        feedback.textContent = 'Username too short.';
+        feedback.style.color = 'orange';
+        return;
+    }
+
+    fetch('{{ route("check.username") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ username })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.available) {
+            feedback.textContent = 'Username is available.';
+            feedback.style.color = 'green';
+        } else {
+            feedback.textContent = 'Username is already taken.';
+            feedback.style.color = 'red';
+        }
+    });
+});
+
+    const passwordInput = document.querySelector('input[name="password"]');
+    const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+    const passwordMatchFeedback = document.getElementById('passwordMatchFeedback');
+
+    function checkPasswordMatch() {
+        if (confirmPasswordInput.value === '') {
+            passwordMatchFeedback.textContent = '';
+            return;
+        }
+
+        if (passwordInput.value === confirmPasswordInput.value) {
+            passwordMatchFeedback.textContent = 'Passwords match.';
+            passwordMatchFeedback.style.color = 'green';
+        } else {
+            passwordMatchFeedback.textContent = 'Passwords do not match.';
+            passwordMatchFeedback.style.color = 'red';
+        }
+    }
+
+    passwordInput.addEventListener('input', checkPasswordMatch);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+
+</script>
+
+@if(session('register_success'))
+<script>
+    setTimeout(() => {
+        if (confirm("{{ session('register_success') }}")) {
+            window.location.href = "{{ route('manage_reg_login.login') }}";
+        }
+    }, 100);
+</script>
+@endif
 
 @endsection

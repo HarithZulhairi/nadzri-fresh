@@ -168,7 +168,7 @@
             <img src="{{ asset('uploads/Nadzri-fresh-logo.png') }}" alt="Nadzri Fresh Logo">
         </div>
         <h3 style="text-align:center; margin-bottom:20px;">User Login</h3>
-        <form class="login-form" method="POST" action="{{ route('manage_reg_login.login') }}">
+        <form class="login-form" method="POST" action="{{ route('manage_reg_login.login.submit') }}">
             @csrf
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
@@ -186,6 +186,13 @@
                 <a href="">Forgot password?</a>
             </div>
         </form>
+
+        @if ($errors->has('login_error'))
+            <div style="color: red; text-align: center; margin-top: 10px;">
+                {{ $errors->first('login_error') }}
+            </div>
+        @endif
+
     </div>
 </div>
 
