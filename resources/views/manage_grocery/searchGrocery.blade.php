@@ -84,7 +84,7 @@
                 <img src="{{ asset('storage/' . $product->product_picture_path) }}" alt="{{ $product->product_name }}">
                 <span>{{ $product->product_name }}</span>
             </div>
-            <a href="{{ route('manage_grocery.showGrocery', ['product' => $product->id]) }}">
+            <a href="{{ route('manage_grocery.viewGrocery', ['product' => $product->product_ID]) }}">
                 <button class="go-btn">Go</button>
             </a>
         </div>

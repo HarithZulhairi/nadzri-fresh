@@ -106,12 +106,9 @@ class GroceryController extends Controller
     {
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
-            'product_description' => 'nullable|string',
-            'product_category' => 'required|string|max:255',
-            'product_price' => 'required|numeric|min:0',
+            'product_description' => 'required|string',
             'product_discount' => 'nullable|numeric|min:0|max:100',
-            'product_supplier' => 'nullable|string|max:255',
-            'product_picture_path' => 'nullable|image|max:2048'
+            'product_price' => 'required|numeric|min:0',
         ]);
 
         // Handle optional image replacement
@@ -127,8 +124,9 @@ class GroceryController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('manage_grocery.viewGrocery')
-                         ->with('success', 'Product updated successfully');
+        return redirect()
+            ->route('manage_grocery.viewGrocery', $product->product_ID)
+            ->with('success', 'Product updated successfully!');
     }
 
     // Delete a grocery item
@@ -140,8 +138,9 @@ class GroceryController extends Controller
 
         $product->delete();
 
-        return redirect()->route('manage_grocery.viewGrocery')
-                         ->with('success', 'Product deleted successfully');
+        // Redirect to the grocery list after deletion
+        return redirect()->route('manage_grocery.viewGroceryList')
+                        ->with('success', 'Product deleted successfully');
     }
 
     // Search grocery items

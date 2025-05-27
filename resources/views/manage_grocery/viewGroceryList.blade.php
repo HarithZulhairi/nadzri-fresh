@@ -1,5 +1,9 @@
 @extends('layouts.headerFooter')
-
+@if(session('success'))
+<div style="background: #d4edda; color: #155724; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+    {{ session('success') }}
+</div>
+@endif
 @section('content')
 <style>
   .inventory-container {
