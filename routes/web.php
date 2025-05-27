@@ -62,12 +62,14 @@ Route::get('/grocery/search', [GroceryController::class, 'search'])->name('manag
 
 
 //MUHAMMAD IQMAL HAFIY BIN TAJUDIN 
-Route::get('/stock/add', [StockController::class, 'create'])->name('manage_stock.addStock');
-Route::post('/stocks', [StockController::class, 'store'])->name('stocks.store');
+Route::get('/stock/add-list', [StockController::class, 'create'])->name('manage_stock.addStock');
+Route::get('/stock/add-form/{product}', [StockController::class, 'addForm'])->name('manage_stock.addStockForm');
+Route::put('/stock/update/{product}', [StockController::class, 'update'])->name('manage_stock.addStockUpdate');
 Route::get('/stock/view', [StockController::class, 'index'])->name('manage_stock.viewStock');
-Route::get('/manage_stock/{id}', [StockController::class, 'show'])->name('manage_stock.stockDetail');
-Route::put('/manage_stock/{id}', [StockController::class, 'update'])->name('manage_stock.update');
-Route::delete('/manage_stock/{id}', [StockController::class, 'destroy'])->name('manage_stock.destroy');
+Route::get('/stock/edit/{product}/{stock}', [StockController::class, 'edit'])->name('manage_stock.editStock');
+Route::put('/stock/update/{product}/{stock}', [StockController::class, 'updateStock'])->name('manage_stock.updateStock');
+Route::delete('/stock/delete/{product}', [StockController::class, 'destroy'])->name('manage_stock.destroy');
+
 
 
 // Testing add product

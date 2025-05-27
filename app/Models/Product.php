@@ -23,6 +23,7 @@ class Product extends Model
         'product_expiryDate',
         'product_status',
         'product_supplier',
+        'product_inStock',
         'product_waste',
         'product_picture_path'
     ];

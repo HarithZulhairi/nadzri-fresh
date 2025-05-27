@@ -12,17 +12,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('stocks', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->integer('quantity');
-            $table->integer('max_quantity')->default(100);
-            $table->date('expiration_date')->nullable();
-            $table->string('category')->nullable(); // optional: might already be in product
-            $table->decimal('price', 8, 2)->nullable(); // optional: if per stock price
-            $table->string('supplier')->nullable();
+            $table->id('stock_ID');
+            $table->BigInteger('product_ID')->unsigned();
+            $table->foreign('product_ID')->references('product_ID')->on('product')->onDelete('cascade');
+            $table->integer('stock_quantity');
             $table->timestamps();
-
-            $table->foreign('product_id')->references('product_ID')->on('product')->onDelete('cascade');
         });
     }
 

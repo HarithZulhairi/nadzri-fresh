@@ -12,18 +12,22 @@
           padding: 2rem;
           line-height: 1.6;
         }
+        
         h1 {
           color: #2e8b57;
           margin-bottom: 2rem;
         }
+
         .form-group {
           margin-bottom: 1.5rem;
         }
+
         label {
           display: block;
           margin-bottom: 0.5rem;
           font-weight: 500;
         }
+
         input, select, textarea {
           width: 100%;
           padding: 0.75rem;
@@ -31,9 +35,11 @@
           border-radius: 4px;
           font-size: 1rem;
         }
+
         textarea {
           min-height: 100px;
         }
+
         button {
           background-color: #2e8b57;
           color: white;
@@ -44,9 +50,11 @@
           cursor: pointer;
           transition: background-color 0.3s;
         }
+
         button:hover {
           background-color: #247348;
         }
+
     </style>
   </head>
   <body>

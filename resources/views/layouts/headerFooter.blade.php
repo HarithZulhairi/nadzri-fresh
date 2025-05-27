@@ -18,8 +18,8 @@
         <div class="dropdown">
             <a href="">Stocks</a>
             <div class="dropdown-content">
-                <a href="">Add Stocks <i class="fa fa-chevron-right"></i></a>
-                <a href="">View Stocks <i class="fa fa-chevron-right"></i></a>
+                <a href="{{ route('manage_stock.addStock') }}">Add Stocks <i class="fa fa-chevron-right"></i></a>
+                <a href="{{ route('manage_stock.viewStock') }}">View Stocks <i class="fa fa-chevron-right"></i></a>
             </div>
         </div>
         

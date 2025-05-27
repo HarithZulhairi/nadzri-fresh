@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('product_status');
             $table->boolean('product_waste')->default(false);
             $table->string('product_picture_path')->nullable();
+            $table->boolean('product_inStock')->default(false)->nullable();
             $table->timestamp('disposed_at')->nullable();
         });
     }

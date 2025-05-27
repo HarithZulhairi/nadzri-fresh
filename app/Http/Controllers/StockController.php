@@ -10,82 +10,92 @@ use Carbon\Carbon;
 
 class StockController extends Controller
 {
+    public function index()
+    {
+        $products = Product::all();
+        $stocks = Stock::all();
+
+        return view('manage_stock.viewStock', [
+            'products' => $products,
+            'stocks' => $stocks
+        ]);
+    }
+    
     public function create()
     {
         $products = Product::all(); // Get all products for dropdown
-        return view('manage_stock.addStock', compact('products'));
+        $stockCount = Product::where('product_status', '==', 'Good')
+                       ->where('product_inStock', 0)
+                       ->count();
+
+        return view('manage_stock.addStock', [
+            'products' => $products,
+            'stockCount' => $stockCount
+        ]);
     }
 
-    public function store(Request $request)
+
+    public function update(Request $request, Product $product)
     {
+        if ($product->product_inStock) {
+            return back()->with('error', 'This product is already in stock');
+        }
+
         $validatedData = $request->validate([
-            'product_id' => 'required|exists:product,product_ID',
-            'expiration_date' => 'required|date',
-            'category' => 'required|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer',
-            'supplier' => 'nullable|string',
+            'stock_quantity' => 'required|integer'
         ]);
 
-        // You can create a new Stock model here if it exists, or just handle the data
-        $stocks = Stock::create([
-            'product_id' => $validatedData['product_id'],
-            'quantity' => $validatedData['quantity'],
-            'quantity' => $validatedData['quantity'],
-            'expiration_date' => $validatedData['expiration_date'],
-            'category' => $validatedData['category'],
-            'price' => $validatedData['price'],
-            'supplier' => $validatedData['supplier'],
-        ]);
+        $product->update(['product_inStock' => true]);
 
-        // Example without creating a Stock model yet:
-        return back()->with('success', 'Stock saved!');
-    }
+        $stock = new Stock($validatedData);
+        $stock->product_ID = $product->product_ID;
+        $stock->stock_quantity = $request->stock_quantity;
 
-    public function index(Request $request)
-    {
-        $search = $request->input('search');
-    
-        $stocks = \App\Models\Stock::with('product')
-            ->when($search, function($query, $search) {
-                return $query->whereHas('product', function($q) use ($search) {
-                    $q->where('product_name', 'like', "%$search%");
-                });
-            })
-            ->get();
-
-        return view('manage_stock.viewStock', compact('stocks', 'search'));
-    }
-
-    public function show($id)
-    {
-        $stock = Stock::with('product')->findOrFail($id);
-        return view('manage_stock.stockDetail', compact('stock'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $stock = Stock::findOrFail($id);
-
-        // Update only stock table
-        $stock->quantity = $request->quantity;
         $stock->save();
 
-        // Optional: update price or expiry in product table
-        $stock->product->product_price = $request->price;
-        $stock->product->product_expiryDate = $request->expiration_date;
-        $stock->product->save();
-
-        return redirect()->route('manage_stock.viewStock')->with('success', 'Stock updated successfully.');
+        return redirect()->route('manage_stock.viewStock')
+                        ->with('success', 'Stock added successfully and product is now in stock');
     }
 
-    public function destroy($id)
+    public function addForm(Product $product)
     {
-        $stock = Stock::findOrFail($id);
-        $stock->delete();
-
-        return redirect()->route('manage_stock.viewStock')->with('success', 'Stock has been deleted');
+        return view('manage_stock.addStockForm', ['product' => $product]);
     }
 
+    public function edit(Product $product, Stock $stock)
+    {
+        return view('manage_stock.editStock', ['product' => $product, 'stock' => $stock]);
+    }
+
+    public function updateStock(Request $request, Product $product, Stock $stock)
+    {
+        // Validate the request
+        $validatedData = $request->validate([
+            'stock_quantity' => 'required|integer|min:1'
+        ]);
+
+        // Update the stock
+        $stock->update([
+            'stock_quantity' => $validatedData['stock_quantity']
+        ]);
+
+        return redirect()->route('manage_stock.viewStock')
+                        ->with('success', 'Stock quantity updated successfully');
+    }
+
+    public function destroy(Product $product)
+    {
+        // Delete the associated stock record first
+        $product->stock()->delete();
+        
+        // Option 1: Just remove from stock (keep product)
+        $product->update(['product_inStock' => false]);
+        
+        // Option 2: Completely delete the product (uncomment if you want this)
+        // $product->delete();
+        
+        return redirect()->route('manage_stock.viewStock')
+                        ->with('success', 'Product removed from stock successfully');
+    }
 
 }
