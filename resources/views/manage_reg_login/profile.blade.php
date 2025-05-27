@@ -8,32 +8,34 @@
 
 <style>
     .profile-container {
-        max-width: 80%;
+        max-width: 1000px;
         margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
-        gap: 3rem;
+        gap: 2rem;
         align-items: flex-start;
-        justify-content: flex-start;
+        justify-content: center;
     }
 
-    .profile-card, .profile-info {
-        background-color: #fff;
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    }
+.profile-card, .profile-info {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    flex-grow: 1;
+    flex-shrink: 0;
+}
 
-    .profile-card {
-        flex: 1 1 300px;
-        text-align: center;
-    }
+.profile-card {
+    flex-basis: 280px;
+    max-width: 320px;
+    text-align: center;
+}
 
-    .profile-info {
-        flex: 2 1 600px;
-        margin-left: 2rem;
-        padding-left: 2rem;
-    }
+.profile-info {
+    flex-basis: 500px;
+    max-width: 100%;
+}
 
     .profile-img {
         width: 150px;

@@ -114,7 +114,9 @@
 
         <h2>Sign Up</h2>
 
-        @if ($errors->any())
+        <form class="register-form" method="POST" action="{{ route('manage_reg_login.register.store') }}">
+            @csrf
+            @if ($errors->any())
                 <div style="color: red;">
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -122,17 +124,17 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
-
-        <form class="register-form" method="POST" action="register/store">
-            @csrf
-
+            @endif            
+            
             <input type="text" name="name" placeholder="Name*" required>
             <div style="display: flex; flex-direction: column; align-items: flex-start;">
                 <input type="text" name="username" id="usernameInput" placeholder="Username*" required>
-                <span id="usernameFeedback"></span>
+                <span id="usernameFeedback" style="font-size: 0.9rem;"></span>            
             </div>
-            <input type="email" name="email" placeholder="Email*" required>
+            <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                <input type="email" name="email" id="emailInput" placeholder="Email*" required>
+                <span id="emailFeedback" style="font-size: 0.9rem;"></span>
+            </div>
 
             <div class="form-row">
                 <select name="country_code" required>
@@ -161,36 +163,6 @@
 </div>
 
 <script>
-document.getElementById('usernameInput').addEventListener('input', function () {
-    const username = this.value;
-    const feedback = document.getElementById('usernameFeedback');
-
-    if (username.length < 3) {
-        feedback.textContent = 'Username too short.';
-        feedback.style.color = 'orange';
-        return;
-    }
-
-    fetch('{{ route("check.username") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ username })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.available) {
-            feedback.textContent = 'Username is available.';
-            feedback.style.color = 'green';
-        } else {
-            feedback.textContent = 'Username is already taken.';
-            feedback.style.color = 'red';
-        }
-    });
-});
-
     const passwordInput = document.querySelector('input[name="password"]');
     const confirmPasswordInput = document.getElementById('confirmPasswordInput');
     const passwordMatchFeedback = document.getElementById('passwordMatchFeedback');
@@ -214,7 +186,68 @@ document.getElementById('usernameInput').addEventListener('input', function () {
     confirmPasswordInput.addEventListener('input', checkPasswordMatch);
 
 
-</script>
+document.addEventListener("DOMContentLoaded", function () {
+    const usernameInput = document.getElementById('usernameInput');
+    const usernameFeedback = document.getElementById('usernameFeedback');
+    const emailInput = document.getElementById('emailInput');
+    const emailFeedback = document.getElementById('emailFeedback');
+
+    if (usernameInput) {
+        usernameInput.addEventListener('input', function () {
+            const username = this.value.trim();
+            if (username.length < 3) {
+                usernameFeedback.textContent = 'Username too short.';
+                usernameFeedback.style.color = 'orange';
+                return;
+            }
+
+            fetch('{{ route("check.username") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ username })
+            })
+            .then(response => response.json())
+            .then(data => {
+                usernameFeedback.textContent = data.available ? 'Username is available.' : 'Username is already taken.';
+                usernameFeedback.style.color = data.available ? 'green' : 'red';
+            });
+        });
+    }
+
+    if (emailInput) {
+        let emailTimeout;
+        emailInput.addEventListener('input', function () {
+            clearTimeout(emailTimeout);
+            const email = this.value.trim();
+            if (!email.includes('@') || email.length < 5) {
+                emailFeedback.textContent = '';
+                return;
+            }
+
+            emailTimeout = setTimeout(() => {
+                fetch('{{ route("check.email") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    emailFeedback.textContent = data.available ? 'Email is available.' : 'Email is already registered.';
+                    emailFeedback.style.color = data.available ? 'green' : 'red';
+                })
+                .catch(() => {
+                    emailFeedback.textContent = '';
+                });
+            }, 500);
+        });
+    }
+});</script>
 
 @if(session('register_success'))
 <script>

@@ -98,7 +98,8 @@
 
         <div class="form-group">
             <label>Email</label>
-            <input type="email" name="email" value="{{ $user->email }}">
+            <input type="email" name="email" id="emailInput" value="{{ $user->email }}">
+            <span id="emailFeedback" style="font-size: 0.9rem;"></span>
         </div>
 
         <div class="form-group">
@@ -158,6 +159,45 @@
             }
         });
     });
+
+let emailTimeout;
+
+document.getElementById('emailInput').addEventListener('input', function () {
+    clearTimeout(emailTimeout);
+    
+    const email = this.value.trim();
+    const feedback = document.getElementById('emailFeedback');
+
+    if (!email.includes('@') || email.length < 5) {
+        feedback.textContent = '';
+        return;
+    }
+
+    emailTimeout = setTimeout(() => {
+        fetch('{{ route("check.email") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.available) {
+                feedback.textContent = 'Email is available.';
+                feedback.style.color = 'green';
+            } else {
+                feedback.textContent = 'Email is already registered.';
+                feedback.style.color = 'red';
+            }
+        })
+        .catch(() => {
+            feedback.textContent = 'Error checking email.';
+            feedback.style.color = 'red';
+        });
+    }, 500);
+});
 
 </script>
 

@@ -2,6 +2,13 @@
 
 @section('content')
 
+@if(session('too_many_attempts'))
+<script>
+    alert("{{ session('too_many_attempts') }}");
+</script>
+@endif
+
+
 <style>
     body { 
         background-color: #fef9ed; 
@@ -168,6 +175,13 @@
             <img src="{{ asset('uploads/Nadzri-fresh-logo.png') }}" alt="Nadzri Fresh Logo">
         </div>
         <h3 style="text-align:center; margin-bottom:20px;">User Login</h3>
+
+        @if ($errors->has('login_error'))
+        <script>
+            alert("{{ $errors->first('login_error') }}");
+        </script>
+        @endif
+
         <form class="login-form" method="POST" action="{{ route('manage_reg_login.login.submit') }}">
             @csrf
             <input type="text" name="username" placeholder="Username" required>
@@ -187,11 +201,6 @@
             </div>
         </form>
 
-        @if ($errors->has('login_error'))
-            <div style="color: red; text-align: center; margin-top: 10px;">
-                {{ $errors->first('login_error') }}
-            </div>
-        @endif
 
     </div>
 </div>

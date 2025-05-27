@@ -47,13 +47,19 @@ Route::get('/waste-count', function() {
 Route::get('/grocery/add', [GroceryController::class, 'create'])->name('manage_grocery.addGrocery');
 Route::post('/grocery/store', [GroceryController::class, 'store'])->name('manage_grocery.storeGrocery');
 
+// View all groceries
+Route::get('/grocery/view', [GroceryController::class, 'index'])->name('manage_grocery.viewGroceryList');
+// View a single grocery item
+Route::get('/grocery/view/{product}', [GroceryController::class, 'show'])->name('manage_grocery.viewGrocery');
+// Edit grocery item (show form)
 Route::get('/grocery/edit/{product}', [GroceryController::class, 'edit'])->name('manage_grocery.editGrocery');
+// Update grocery (submit form)
 Route::put('/grocery/update/{product}', [GroceryController::class, 'update'])->name('manage_grocery.updateGrocery');
 
 Route::delete('/grocery/delete/{product}', [GroceryController::class, 'destroy'])->name('manage_grocery.deleteGrocery');
-
-Route::get('/grocery/view', [GroceryController::class, 'index'])->name('manage_grocery.viewGrocery');
 Route::get('/grocery/search', [GroceryController::class, 'search'])->name('manage_grocery.searchGrocery');
+
+
 
 //MUHAMMAD IQMAL HAFIY BIN TAJUDIN 
 Route::get('/stock/add', [StockController::class, 'create'])->name('manage_stock.addStock');
@@ -74,10 +80,14 @@ Route::post('/product', [ProductController::class, 'store'])->name('manage_waste
 // Registration
 Route::get('/register', [RegLoginController::class, 'showRegisterForm'])->name('manage_reg_login.register');
 Route::post('/register/store', [RegLoginController::class, 'register'])->name('manage_reg_login.register.store');
+Route::post('/check-email', [RegLoginController::class, 'checkEmail'])->name('check.email');
+Route::post('/check-username', [RegLoginController::class, 'checkUsername'])->name('check.username');
 
 // Login
 Route::get('/login', [RegLoginController::class, 'showLoginForm'])->name('manage_reg_login.login');
-Route::post('/login', [RegLoginController::class, 'login'])->name('manage_reg_login.login.submit');
+Route::post('/login', [RegLoginController::class, 'login'])
+    ->name('manage_reg_login.login.submit')
+    ->middleware('throttle:5,1');
 Route::get('/logout', [RegLoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
@@ -87,10 +97,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile/update', [RegLoginController::class, 'updateProfile'])->name('manage_reg_login.updateProfile');
     Route::post('/profile/update-photo', [RegLoginController::class, 'updatePhoto'])->name('manage_reg_login.updatePhoto');
     Route::post('/remove-photo', [RegLoginController::class, 'removePhoto'])->name('manage_reg_login.removePhoto');
-    Route::post('/check-username', [RegLoginController::class, 'checkUsername'])->name('check.username');
 
     // Change Password
     Route::get('/password/change', [RegLoginController::class, 'showChangePassword'])->name('manage_reg_login.changePassword');
     Route::post('/password/update', [RegLoginController::class, 'updatePassword'])->name('manage_reg_login.updatePassword');
 
 });
+

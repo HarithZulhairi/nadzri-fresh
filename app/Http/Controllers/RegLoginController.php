@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\RateLimiter;
 
 class RegLoginController extends Controller
 {
@@ -22,6 +23,30 @@ class RegLoginController extends Controller
             'password' => 'required',
             'role' => 'required',
         ]);
+
+        // Step 1: Set a unique key using IP
+        $key = 'login:' . $request->ip();
+
+        // Step 2: Check if too many attempts
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            return back()->with('too_many_attempts', 'Too many login attempts. Please try again in 1 minute.');
+        }
+
+        // Step 3: Attempt to find user and check password
+        $user = User::where('username', $request->username)
+            ->where('role', $request->role)
+            ->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user);
+            RateLimiter::clear($key); // Step 4: Clear on successful login
+            return redirect()->route('home');
+        }
+
+        // Step 5: Register a failed attempt
+        RateLimiter::hit($key, 60); // Lock for 60 seconds
+
+        return back()->withErrors(['login_error' => 'Invalid credentials']);
 
         $user = User::where('username', $request->username)
             ->where('role', $request->role)
@@ -43,13 +68,13 @@ class RegLoginController extends Controller
     // Register logic
     public function register(Request $request) {
         $request->validate([
-            'name' => 'required',
-            'username' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
+            'email' => 'required|email|unique:users,email',
             'phone' => 'required',
             'dob' => 'nullable|date',
             'password' => 'required|min:6|confirmed',
-            'role' => 'required',
+            'role' => 'required|in:admin,staff'
         ]);
 
         User::create([
@@ -63,7 +88,7 @@ class RegLoginController extends Controller
             'photo' => 'uploads/default.jpg'
         ]);
 
-        return redirect()->route('manage_reg_login.login')->with('register_success', 'Registration successful! Please login.');
+        return redirect()->back()->with('register_success', 'Registration successful. Proceed to login?');
     }
 
     // Profile view
@@ -170,7 +195,7 @@ class RegLoginController extends Controller
     {
         $exists = User::where('username', $request->username)->exists();
         return response()->json(['available' => !$exists]);
-    }    
+    }
     
     public function logout(Request $request)
     {
@@ -180,6 +205,13 @@ class RegLoginController extends Controller
         $request->session()->regenerateToken(); // Prevent CSRF reuse
 
         return redirect()->route('manage_reg_login.login')->with('success', 'You have been logged out successfully.');
-    }    
+    } 
+    
+    public function checkEmail(Request $request)
+    {
+        $exists = User::where('email', $request->email)->exists();
+        return response()->json(['available' => !$exists]);
+    }
+    
 }
 
