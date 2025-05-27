@@ -3,11 +3,8 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WasteController;
 use App\Http\Controllers\GroceryController;
-<<<<<<< HEAD
 use App\Http\Controllers\StockController;
-=======
 use App\Http\Controllers\RegLoginController;
->>>>>>> 832bdbef603cd5ad04234f9863fb423b63e0ac39
 use Illuminate\Support\Facades\Route;
 
 
