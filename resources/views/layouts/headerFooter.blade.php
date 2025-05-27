@@ -28,7 +28,7 @@
             <div class="dropdown-content">
                 <a href="{{ route('manage_grocery.addGrocery') }}" >Add Grocery <i class="fa fa-chevron-right"></i></a>
                 <a href="{{ route('manage_grocery.viewGroceryList') }}" >View Grocery List<i class="fa fa-chevron-right"></i></a>
-                <a href="" >Search <i class="fa fa-chevron-right"></i></a>
+                <a href="{{ route('manage_grocery.searchGrocery') }}" >Search Grocery<i class="fa fa-chevron-right"></i></a>
             </div>
         </div>
         
