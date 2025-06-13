@@ -88,7 +88,7 @@
         <div class="grocery-form">
             <!-- Grocery Image Upload -->
             <div class="grocery-image">
-                <img src="{{ asset('images/default-onion.png') }}" alt="Grocery Image">
+                <img src="{{ asset('uploads/grocerypic.png') }}" alt="Grocery Image">
                 <input type="file" name="product_picture" style="margin-top: 10px;" accept="image/*">
             </div>
 
