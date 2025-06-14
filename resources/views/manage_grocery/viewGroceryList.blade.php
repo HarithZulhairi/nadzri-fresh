@@ -65,6 +65,11 @@
   .action-buttons {
     display: flex;
     gap: 8px;
+    width: 100%;
+    align-items: center;
+  }
+  .action-buttons a, .action-buttons form {
+    flex: 1;
   }
 
   .btn {
@@ -163,21 +168,24 @@
             {{ $product->product_status }}
           </span>
         </td>
-        <td class="action-buttons">
-          <a href="{{ route('manage_grocery.viewGrocery', ['product' => $product->product_ID]) }}" class="btn btn-view">
-            <i class="fas fa-eye"></i> View
-          </a>
-          <a href="{{ route('manage_grocery.editGrocery', ['product' => $product->product_ID]) }}" class="btn btn-edit">
-            <i class="fas fa-edit"></i> Edit
-          </a>
-          <form action="{{ route('manage_grocery.deleteGrocery', ['product' => $product->product_ID]) }}" method="POST" ...>
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-delete">
-              <i class="fas fa-trash"></i> Delete
-            </button>
-          </form>
+        <td>
+          <div class="action-buttons">
+            <a href="{{ route('manage_grocery.viewGrocery', ['product' => $product->product_ID]) }}" class="btn btn-view">
+              <i class="fas fa-eye"></i> View
+            </a>
+            <a href="{{ route('manage_grocery.editGrocery', ['product' => $product->product_ID]) }}" class="btn btn-edit">
+              <i class="fas fa-edit"></i> Edit
+            </a>
+            <form action="{{ route('manage_grocery.deleteGrocery', ['product' => $product->product_ID]) }}" method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-delete">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </form>
+          </div>
         </td>
+
       </tr>
       @endforeach
     </tbody>

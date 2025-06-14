@@ -56,7 +56,7 @@
         gap: 10px;
     }
 
-    .btn-edit, .btn-delete {
+    .btn-edit, .btn-delete , .btn-back {
         padding: 8px 16px;
         border: none;
         border-radius: 8px;
@@ -67,6 +67,11 @@
 
     .btn-edit {
         background-color: #99985B;
+        color: white;
+    }
+
+    .btn-back {
+        background-color:rgb(42, 104, 55);
         color: white;
     }
 
@@ -169,6 +174,11 @@
         <input type="text" value="{{ $product->product_supplier }}" disabled>
 
         <div class="button-row">
+
+            <a href="{{ route('manage_grocery.viewGroceryList') }}">
+                <button class="btn-back">Back</button>
+            </a>
+        
             <form id="deleteForm" action="{{ route('manage_grocery.deleteGrocery', $product->product_ID) }}" method="POST">
                 @csrf
                 @method('DELETE')
