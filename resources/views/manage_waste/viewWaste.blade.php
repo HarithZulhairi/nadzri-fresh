@@ -219,10 +219,103 @@
     .cancel-btn:hover {
         background-color: red;
     }
+
+    .search-filter-container {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .search-filter-container input[type="text"],
+    .search-filter-container input[type="date"],
+    .search-filter-container select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .search-btn, .filter-btn, .reset-btn {
+        transition: background-color 0.3s;
+    }
+
+    .search-btn:hover {
+        background-color: #6e703d !important;
+    }
+
+    .filter-btn:hover {
+        background-color: #6e3d3d !important;
+    }
+
+    .reset-btn:hover {
+        background-color: #4d4d4d !important;
+    }
 </style>
 
 <div class="waste-container">
     <h1>Waste Product List</h1>
+    <div class="search-filter-container" style="margin: 20px 0; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: center;">
+        <!-- Search Form -->
+        <form method="GET" action="{{ route('manage_waste.viewWaste') }}" style="display: flex; gap: 10px;">
+            <input type="text" name="search" placeholder="Search products..." 
+                value="{{ $searchTerm }}" class="form-control" style="padding: 10px; border-radius: 4px; width: 500px;">
+            <button type="submit" class="search-btn" style="background-color: #8D8F55; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+                Search
+            </button>
+        </form>
+
+        <!-- Filter Button (Triggers Modal) -->
+        <button onclick="showFilterModal()" class="filter-btn" style="background-color: #8F5555; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+            Filter
+        </button>
+
+        <!-- Reset Button -->
+        <a href="{{ route('manage_waste.viewWaste') }}" class="reset-btn" style="background-color: #686868; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; text-decoration: none;">
+            Reset
+        </a>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="confirmation-modal">
+        <div class="modal-content" style="width: 600px;">
+            <h3>Filter Waste Products</h3>
+            
+            <form method="GET" action="{{ route('manage_waste.viewWaste') }}" id="filterForm">
+                <!-- Status Filter -->
+                <div style="margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 18px;">Status:</label>
+                    <select name="status" class="form-control" style="padding: 10px; width: 100%;">
+                        <option value="all" {{ $selectedStatus == 'all' ? 'selected' : '' }}>All Statuses</option>
+                        <option value="Expired" {{ $selectedStatus == 'Expired' ? 'selected' : '' }}>Expired</option>
+                        <option value="Donated" {{ $selectedStatus == 'Donated' ? 'selected' : '' }}>Donated</option>
+                        <option value="Damaged" {{ $selectedStatus == 'Damaged' ? 'selected' : '' }}>Damaged</option>
+                        <option value="Disposed" {{ $selectedStatus == 'Disposed' ? 'selected' : '' }}>Disposed</option>
+                        <option value="Almost Expired" {{ $selectedStatus == 'Almost Expired' ? 'selected' : '' }}>Almost Expired</option>
+                    </select>
+                </div>
+                
+                <!-- Date Range Filter -->
+                <div style="margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 18px;">Expiry Date Range:</label>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <input type="date" name="date_from" value="{{ $dateFrom }}" class="form-control" style="padding: 10px;">
+                        <span style="align-self: center;">to</span>
+                        <input type="date" name="date_to" value="{{ $dateTo }}" class="form-control" style="padding: 10px;">
+                    </div>
+                </div>
+                
+                <!-- Hidden search field to maintain search term -->
+                <input type="hidden" name="search" value="{{ $searchTerm }}">
+                
+                <div class="modal-actions">
+                    <button type="submit" class="confirm-btn">Apply Filters</button>
+                    <button type="button" onclick="hideFilterModal()" class="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -334,5 +427,14 @@
     function hideDeleteConfirmation() {
         document.getElementById('deleteConfirmationModal').style.display = 'none';
     }
+
+    function showFilterModal() {
+        document.getElementById('filterModal').style.display = 'flex';
+    }
+
+    function hideFilterModal() {
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
 </script>
 @endsection
